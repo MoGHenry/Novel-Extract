@@ -1,11 +1,13 @@
 import requests
 from bs4 import BeautifulSoup, NavigableString
+from fake_useragent import UserAgent
 
 
 def get_page_info(url):
     try:
         # Send a request to the URL
-        headers = {'User-Agent': 'Mozilla/5.0'}
+        # headers = {'User-Agent': UserAgent().random}
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'}
         response = requests.get(url, headers=headers)
         response.raise_for_status()
 
@@ -19,9 +21,6 @@ def get_page_info(url):
     except requests.RequestException as e:
         print(f"Error: {e}")
         return None
-
-    except requests.RequestException as e:
-        return f"Error: {e}"
 
 
 def extract_novel_info(li_elements):
