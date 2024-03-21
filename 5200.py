@@ -66,7 +66,7 @@ def extract_content(novel_info):
             text = cleanup(text)
             novel_content.append({"title": info["title"], "content": text})
             i = i + 1
-            print(info["title"], f"---({i}/{len(novel_info)})finished")
+            print(info["title"], f"--- ({i}/{len(novel_info)})finished")
             sleep_time = random.uniform(0.5, 1.5)
             time.sleep(sleep_time)
     return novel_content
@@ -75,8 +75,8 @@ def extract_content(novel_info):
 def generate_txt(filename, novel_content):
     with open(filename+".txt", "a", encoding='utf-8') as file:
         for i in novel_content:
-            file.write("\n"+str(i["title"]))
-            file.write("\n"+i["content"])
+            file.write(i["title"]+"\n")
+            file.write(i["content"]+"\n")
 
 
 def run_code(url, filename):
@@ -84,7 +84,7 @@ def run_code(url, filename):
     print("get page info successful")
 
     # marker = soup.find('li', class_='col3', string='正文卷')
-    marker = soup.find('li',string='全部章节')
+    marker = soup.find('li', string='全部章节')
 
     # List to hold the desired elements
     desired_list = []
