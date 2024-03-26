@@ -13,7 +13,7 @@ def convert_fullwidth_to_halfwidth(text):
 def get_page_info(url):
     try:
         # Send a request to the URL
-        headers = {'Content-Type': 'text/html', 'User-Agent': UserAgent().random}
+        headers = {'User-Agent': UserAgent().random}
         # headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)
         # Chrome/122.0.0.0 Safari/537.36'}
         response = requests.get(url, headers=headers)
@@ -72,20 +72,22 @@ def remove_before_second_occurrence(text, substring):
 def extract_content(novel_info):
     novel_content = []
     i = 0
-    for info in novel_info:
+    for info in novel_info[30:31]:
         novel_url = info["href"]
         soup = get_page_info(novel_url)
 
         text = soup.find(class_="txtnav")
         text = cleanup(text)
+        print(text)
         text = remove_before_second_occurrence(text, "\u2003\u2003")
         text = text.replace("\u2003\u2003", "")
         text = text.replace("\n\n", "\n")
+        print(text)
 
         novel_content.append({"title": info["title"], "content": text})
         i = i+1
-        print(info["title"], f"--- ({i}/{len(novel_info)})")
-        sleep_time = random.uniform(2, 3)
+        print(info["title"], f"--- ({i}/{len(novel_info)})finished")
+        sleep_time = random.uniform(0.5, 1.5)
         time.sleep(sleep_time)
     return novel_content
 
@@ -99,16 +101,16 @@ def generate_txt(filename, novel_content):
 
 def run_code(url, filename):
     soup = get_page_info(url)
-    print("get page info Done")
+    print("get page info successful")
     lists = soup.find_all("li")
     novel_infos = extract_novel_info(lists)
-    print("get novel info Done")
+    print("get novel info successful")
     novel_contents = extract_content(novel_infos)
-    print("get page content Done")
+    print("get page content successful")
     generate_txt(filename, novel_contents)
-    print("generate txt Done")
+    print("generate txt successful")
 
 
 if __name__ == '__main__':
-    run_code('https://www.69shu.pro/book/53686/', "只想让玩家省钱的我却被氪成首富")
-    # run_code('https://www.69shu.pro/book/54500/', "我全点了掉宝率2")
+    # run_code('https://www.69shu.pro/book/53686/', "只想让玩家省钱的我却被氪成首富")
+    run_code('https://www.otcwuxi.com/chapter/57212741111/', "我全点了掉宝率2")
